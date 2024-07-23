@@ -55,7 +55,7 @@ const themeOptions: { label: string; key: Theme; icon: string }[] = [
 
 const languageOptions: { label: string; key: Language; value: Language }[] = [
   { label: '简体中文', key: 'zh-CN', value: 'zh-CN' },
-  { label: '繁體中文', key: 'zh-TW', value: 'zh-TW' },
+  // { label: '繁體中文', key: 'zh-TW', value: 'zh-TW' },
   // { label: 'English', key: 'en-US', value: 'en-US' },
   // { label: '한국어', key: 'ko-KR', value: 'ko-KR' },
   // { label: 'Русский язык', key: 'ru-RU', value: 'ru-RU' },
@@ -148,11 +148,11 @@ function handleImportButtonClick(): void {
       <div class="flex items-center space-x-4">
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.description') }}</span>
         <div class="flex-1">
-          <NInput v-model:value="description" placeholder="" />
+          <NInput v-model:value="description" placeholder="无需翻墙，普通人也可以使用国外AI服务" disabled/>
         </div>
-        <NButton size="tiny" text type="primary" @click="updateUserInfo({ description })">
+        <!-- <NButton size="tiny" text type="primary" @click="updateUserInfo({ description })">
           {{ $t('common.save') }}
-        </NButton>
+        </NButton> -->
       </div>
       <div
         class="flex items-center space-x-4"
@@ -205,10 +205,11 @@ function handleImportButtonClick(): void {
           </template>
         </div>
       </div>
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-4 hidden">
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.language') }}</span>
         <div class="flex flex-wrap items-center gap-4">
           <NSelect
+            disabled
             style="width: 140px"
             :value="language"
             :options="languageOptions"
