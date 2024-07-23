@@ -198,7 +198,7 @@ export default {
     setOpen: "OpenAI 相关",
     setOpenPlaceholder: "必须包含 http(s)://",
     setOpenUrl: "OpenAI接口地址",
-    setOpenKeyPlaceholder: "使用自定义 OpenAI Key 绕过密码访问限制",
+    setOpenKeyPlaceholder: "获取和充值KEY请➕客服：zsgpt-888",
     setMj: "Midjourney 相关",
     setMjUrl: "Midjourney接口地址:",
     setMjKeyPlaceholder: "使用自定义 Api Secret 绕过密码访问限制",

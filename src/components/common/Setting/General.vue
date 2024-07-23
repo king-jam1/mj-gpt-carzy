@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { NButton, NInput, NPopconfirm, NSelect, useMessage } from 'naive-ui'
 import type { Language, Theme } from '@/store/modules/app/helper'
 import { SvgIcon } from '@/components/common'
@@ -8,7 +8,7 @@ import type { UserInfo } from '@/store/modules/user/helper'
 import { getCurrentDate } from '@/utils/functions'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { t } from '@/locales'
-
+import { gptServerStore } from '@/store'
 const appStore = useAppStore()
 const userStore = useUserStore()
 
@@ -120,13 +120,30 @@ function clearData(): void {
 
 function handleImportButtonClick(): void {
   const fileInput = document.getElementById('fileInput2') as HTMLElement
-  if (fileInput)   fileInput.click()
+  if (fileInput) fileInput.click()
 }
+
+watch(() => gptServerStore.myData.OPENAI_API_KEY, (n) => {
+  if (!gptServerStore.myData.IS_SET_SYNC) return;
+  gptServerStore.myData.MJ_API_SECRET = n
+  gptServerStore.myData.SUNO_KEY = n;
+  gptServerStore.myData.LUMA_KEY = n;
+  gptServerStore.myData.VIGGLE_KEY = n;
+  gptServerStore.myData.RUNWAY_KEY = n;
+});
 </script>
 
 <template>
   <div class="p-4 space-y-5 min-h-[200px]">
     <div class="space-y-6">
+      <section class="mb-4 flex justify-between items-center">
+        <n-input type="password" :placeholder="$t('mj.setOpenKeyPlaceholder')" show-password-on="click"
+          v-model:value="gptServerStore.myData.OPENAI_API_KEY" clearable>
+          <template #prefix>
+            <span class="text-[var(--n-tab-text-color-active)]">Key:</span>
+          </template>
+        </n-input>
+      </section>
       <div class="flex items-center space-x-4">
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.avatarLink') }}</span>
         <div class="flex-1">
@@ -148,16 +165,13 @@ function handleImportButtonClick(): void {
       <div class="flex items-center space-x-4">
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.description') }}</span>
         <div class="flex-1">
-          <NInput v-model:value="description" placeholder="无需翻墙，普通人也可以使用国外AI服务" disabled/>
+          <NInput v-model:value="description" placeholder="无需翻墙，普通人也可以使用国外AI服务" disabled />
         </div>
         <!-- <NButton size="tiny" text type="primary" @click="updateUserInfo({ description })">
           {{ $t('common.save') }}
         </NButton> -->
       </div>
-      <div
-        class="flex items-center space-x-4"
-        :class="isMobile && 'items-start'"
-      >
+      <div class="flex items-center space-x-4" :class="isMobile && 'items-start'">
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.chatHistory') }}</span>
 
         <div class="flex flex-wrap items-center gap-4">
@@ -193,11 +207,7 @@ function handleImportButtonClick(): void {
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.theme') }}</span>
         <div class="flex flex-wrap items-center gap-4">
           <template v-for="item of themeOptions" :key="item.key">
-            <NButton
-              size="small"
-              :type="item.key === theme ? 'primary' : undefined"
-              @click="appStore.setTheme(item.key)"
-            >
+            <NButton size="small" :type="item.key === theme ? 'primary' : undefined" @click="appStore.setTheme(item.key)">
               <template #icon>
                 <SvgIcon :icon="item.icon" />
               </template>
@@ -208,13 +218,8 @@ function handleImportButtonClick(): void {
       <div class="flex items-center space-x-4 hidden">
         <span class="flex-shrink-0 w-[100px]">{{ $t('setting.language') }}</span>
         <div class="flex flex-wrap items-center gap-4">
-          <NSelect
-            disabled
-            style="width: 140px"
-            :value="language"
-            :options="languageOptions"
-            @update-value="value => appStore.setLanguage(value)"
-          />
+          <NSelect disabled style="width: 140px" :value="language" :options="languageOptions"
+            @update-value="value => appStore.setLanguage(value)" />
         </div>
       </div>
       <div class="flex items-center space-x-4">

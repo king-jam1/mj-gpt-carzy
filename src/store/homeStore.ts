@@ -112,22 +112,23 @@ export interface gptServerType {
 }
 
 const getServerDefault = () => {
+  console.log('import.meta.env.VITE_AI_URL',import.meta.env.VITE_AI_URL)
   let v: gptServerType = {
     OPENAI_API_KEY: "",
-    OPENAI_API_BASE_URL: "",
-    MJ_SERVER: "",
+    OPENAI_API_BASE_URL: import.meta.env.VITE_AI_URL ?? "",
+    MJ_SERVER: import.meta.env.VITE_AI_URL ?? "",
     UPLOADER_URL: "",
     MJ_API_SECRET: "",
     SUNO_KEY: "",
-    SUNO_SERVER: "",
+    SUNO_SERVER: import.meta.env.VITE_AI_URL ?? "",
     MJ_CDN_WSRV: false,
     IS_SET_SYNC: true,
-    LUMA_SERVER: "",
+    LUMA_SERVER: import.meta.env.VITE_AI_URL ?? "",
     LUMA_KEY: "",
-    VIGGLE_SERVER: "",
+    VIGGLE_SERVER: import.meta.env.VITE_AI_URL ?? "",
     VIGGLE_KEY: "",
     TAB_VIDEO: "luma",
-    RUNWAY_SERVER: "",
+    RUNWAY_SERVER: import.meta.env.VITE_AI_URL ?? "",
     RUNWAY_KEY: "",
   };
   return v;
